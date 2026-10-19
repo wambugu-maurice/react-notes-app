@@ -27,6 +27,7 @@ function NoteDetail() {
           await updateDoc(doc(db, "notes", noteId), { isLiked: likeNote });
 
           if (likeNote) {
+            
             toast.success("Note added to favourites");
           } else {
             toast("Note removed from favourites"); 
