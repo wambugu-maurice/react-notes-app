@@ -9,9 +9,8 @@ import DOMPurify from "dompurify"
 function NotesDisplay({ searchQuery, category }) {
   const{notes,error,loading} = useNotes()
 
-  const filteredTasks = notes.filter((note)=>{
+  const filteredNotes = notes.filter((note)=>{
     const searchedNotes = note.title.toLowerCase().includes(searchQuery.toLowerCase())
-
     const categoryNotes = category === "all" || category === note.category
 
     return searchedNotes && categoryNotes
@@ -24,7 +23,7 @@ function NotesDisplay({ searchQuery, category }) {
 
       {
         loading ? <Loader /> :
-        filteredTasks.length > 0 ? filteredTasks.map((note)=>(
+        filteredNotes.length > 0 ? filteredNotes.map((note)=>(
           <Link key={note.id} to={`/notes/${note.id}`} className="notesCard">
             <div className="noteTopSection">
               <h2>{note.title}</h2>

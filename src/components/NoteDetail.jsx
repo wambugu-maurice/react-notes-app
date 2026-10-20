@@ -21,20 +21,16 @@ function NoteDetail() {
     const navigate = useNavigate()
 
    async function handleLiked(noteId) {
-        const likeNote = !content.isLiked;
-        setLikeNote(likeNote);
+        const prev = content.isLiked;
+        const next = !prev
+        setLoading(true)
+        setLikeNote(next);
         try {
-          await updateDoc(doc(db, "notes", noteId), { isLiked: likeNote });
-
-          if (likeNote) {
-            
-            toast.success("Note added to favourites");
-          } else {
-            toast("Note removed from favourites"); 
-          }
+          await updateDoc(doc(db, "notes", noteId), { isLiked: next });
+          next ? toast.success("Note added to favourites") : toast("Note removed from favourites")
         } catch (err) {
           setError(err.message)
-          setLikeNote(!likeNote);
+          setLikeNote(!next);
           toast.error("Couldn't update favourites");
         }
     }
@@ -77,7 +73,7 @@ function NoteDetail() {
         </div>
         <div className="noteBottomSection">
           <p className="category">{content.category}</p>
-          <button onClick={()=> handleLiked(content.id)}>{content.isLiked ? <FcLike />: <FaRegHeart />}</button>
+          <button onClick={()=> handleLiked(content.id)} disabled={loading}>{content.isLiked ? <FcLike />: <FaRegHeart />}</button>
           <button onClick={()=> handleDelete(content.id)} ><RiDeleteBinLine /></button>
           <p className="noteDate">{content.addedOn.toDate().toLocaleDateString()}</p>
         </div>
